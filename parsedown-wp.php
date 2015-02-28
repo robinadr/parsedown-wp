@@ -1,8 +1,9 @@
 <?php
 /*
 	Plugin Name: Parsedown for WordPress
-	Plugin URI: 
+	Plugin URI: http://robinadr.com/
 	Description: A drop-in Markdown plugin using Parsedown Extra.
+	Version: 1.0
 	Author: Robin Adrianse
 	Author URI: http://robinadr.com/
 
@@ -119,23 +120,26 @@ class Parsedown_WP extends ParsedownExtra
 
 	public function pdwp_markdown( $text )
 	{
-		return $this->text( $text );
+		return apply_filters( 'pdwp_markdown', $this->text( $text ) );
 	}
 
-	// Taken directly from PHP Markdown Extra by Michel Fortin
+	// Taken from PHP Markdown Extra by Michel Fortin
 	public function pdwp_add_p( $text )
 	{
-		if (!preg_match( '{^$|^<(p|ul|ol|dl|pre|blockquote)>}i', $text ) ) {
+		$regex = apply_filters( 'pdwp_add_p_regex', '{^$|^<(p|ul|ol|dl|pre|blockquote)>}i' );
+
+		if (!preg_match( $regex, $text ) ) {
 			$text = '<p>' . $text . '</p>';
 			$text = preg_replace( '{\n{2,}}', "</p>\n\n<p>", $text );
 		}
-		return $text;
+
+		return apply_filters( 'pdwp_add_p', $text );
 	}
 
-	// Taken directly from PHP Markdown Extra by Michel Fortin
+	// Taken from PHP Markdown Extra by Michel Fortin
 	public function pdwp_strip_p( $text )
 	{
-		return preg_replace( '{</?p>}i', '', $t );
+		return apply_filters( 'pdwp_strip_p', preg_replace( '{</?p>}i', '', $t ) );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
