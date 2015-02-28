@@ -3,7 +3,7 @@
 	Plugin Name: Parsedown for WordPress
 	Plugin URI: http://robinadr.com/
 	Description: A drop-in Markdown plugin using Parsedown Extra.
-	Version: 1.0
+	Version: 0.1
 	Author: Robin Adrianse
 	Author URI: http://robinadr.com/
 
@@ -58,21 +58,26 @@ software, even if advised of the possibility of such damage.
 
 */
 
-require_once __FILE__ . '/Parsedown/Parsedown.php';
-require_once __FILE__ . '/Parsedown/ParsedownExtra.php';
+require_once __DIR__ . '/Parsedown/Parsedown.php';
+require_once __DIR__ . '/Parsedown/ParsedownExtra.php';
 
-class Parsedown_WP extends ParsedownExtra
+class Parsedown_WP
 {
-	private var $hidden_tags;
-	private var $placeholders;
+	private $parser;
+
+	private $hidden_tags;
+	private $placeholders;
 
 	public function __construct()
 	{
-		add_action( 'init', array( $this, 'init' ) );
+		//add_action( 'init', array( $this, 'init' ) );
+		$this->init();
 	}
 
 	public function init()
 	{
+		$this->parser = new ParsedownExtra();
+
 		// These filters are taken directly from PHP Markdown Extra by Michel 
 		// Fortin to ensure it's a 100% drop-in solution.
 
@@ -120,7 +125,7 @@ class Parsedown_WP extends ParsedownExtra
 
 	public function pdwp_markdown( $text )
 	{
-		return apply_filters( 'pdwp_markdown', $this->text( $text ) );
+		return apply_filters( 'pdwp_markdown', $this->parser->text( $text ) );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
@@ -145,13 +150,13 @@ class Parsedown_WP extends ParsedownExtra
 	// Taken from PHP Markdown Extra by Michel Fortin
 	public function pdwp_hide_tags( $text )
 	{
-		return str_replace( self::$hidden_tags, self::$placeholders, $text );
+		return str_replace( $this->hidden_tags, $this->placeholders, $text );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
 	public function pdwp_show_tags( $text )
 	{
-		return str_replace( self::$placeholders, self::$hidden_tags, $text );
+		return str_replace( $this->placeholders, $this->hidden_tags, $text );
 	}
 }
 
