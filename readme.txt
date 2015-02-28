@@ -1,5 +1,6 @@
 === Parsedown for WordPress ===
 
+contributors: rob1n
 Tags: markdown, formatting, posting, writing, markup
 Tested up to: 4.1.1
 Stable tag: 0.1
@@ -20,7 +21,7 @@ So **why Parsedown?** It's [faster](http://parsedown.org/speed), [more consisten
 
 Development of this WordPress plugin [takes place over on GitHub](https://github.com/robinadr/parsedown-wp). If you have any support requests, I do monitor the support forums on here, or you can [contact me directly](http://robinadr.com/contact).
 
-== Install ==
+== Installation ==
 
 1. Upload the `parsedown-wp` folder to the `wp-content/plugins/` directory
 2. Activate the plugin through the Plugins menu in the WordPress admin
