@@ -7,17 +7,17 @@
 	Author: Robin Adrianse
 	Author URI: http://robinadr.com/
 
-	This plugin uses the Parsedown and Parsedown Extra libraries, which are distributed 
-	under the MIT license by Emanuil Rusev. A full copy of the license is included in 
-	Parsedown/license.txt.
+	This plugin uses the Parsedown and Parsedown Extra libraries, which are 
+	distributed under the MIT license by Emanuil Rusev. A full copy of the 
+	license is included in Parsedown/license.txt.
 */
 
 /*
 
-This plugin is intended to be a 100% compatible drop-in replacement for PHP Markdown 
-Extra by Michel Fortin. Thus, some portions, namely filter order and helper functions, 
-are directly copied from his plugin. These portions are noted as such below. The 
-following copyright notice applies to those portions:
+This plugin is intended to be a 100% compatible drop-in replacement for PHP 
+Markdown Extra by Michel Fortin. Thus, some portions, namely filter order and 
+helper functions, are directly copied from his plugin. These portions are noted 
+as such below. The following copyright notice applies to those portions:
 
 PHP Markdown & Extra
 Copyright (c) 2004-2013 Michel Fortin
@@ -73,20 +73,20 @@ class Parsedown_WP extends ParsedownExtra
 
 	public function init()
 	{
-		// These filters are taken directly from PHP Markdown Extra by Michel Fortin
-		// to ensure it's a 100% drop-in solution.
+		// These filters are taken directly from PHP Markdown Extra by Michel 
+		// Fortin to ensure it's a 100% drop-in solution.
 
 		// Post filters
 		remove_filter( 'the_content',		'wpautop' );
 		remove_filter( 'the_content_rss',	'wpautop' );
 		remove_filter( 'the_excerpt',		'wpautop' );
 
-		add_filter( 'the_content', 			array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'the_content_rss', 		array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'get_the_excerpt', 		array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'get_the_excerpt', 		'trim', 7 );
-		add_filter( 'the_excerpt', 			array( $this, 'pdwp_add_p' )  );
-		add_filter( 'the_excerpt_rss', 		array( $this, 'pdwp_strip_p' )  );
+		add_filter( 'the_content', 		array( $this, 'pdwp_markdown' ), 6 );
+		add_filter( 'the_content_rss', 	array( $this, 'pdwp_markdown' ), 6 );
+		add_filter( 'get_the_excerpt', 	array( $this, 'pdwp_markdown' ), 6 );
+		add_filter( 'get_the_excerpt', 	'trim', 7 );
+		add_filter( 'the_excerpt', 		array( $this, 'pdwp_add_p' )  );
+		add_filter( 'the_excerpt_rss', 	array( $this, 'pdwp_strip_p' )  );
 
 		remove_filter( 'content_save_pre', 	'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 	'balanceTags', 50 );
@@ -94,8 +94,8 @@ class Parsedown_WP extends ParsedownExtra
 		add_filter( 'get_the_excerpt', 		'balanceTags', 9 );
 
 		// Comment filters
-		remove_filter( 'comment_text', 		'wpautop', 30 );
-		remove_filter( 'comment_text', 		'make_clickable' );
+		remove_filter( 'comment_text', 	'wpautop', 30 );
+		remove_filter( 'comment_text', 	'make_clickable' );
 
 		add_filter( 'pre_comment_content', 	array( $this, 'pdwp_markdown' ), 6 );
 		add_filter( 'pre_comment_content', 	array( $this, 'pdwp_hide_tags' ), 8 );
