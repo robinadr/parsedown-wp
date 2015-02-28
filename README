@@ -1,0 +1,3 @@
+# Parsedown for WordPress
+
+Uses Parsedown, a faster and more modern implementation of Markdown, as a drop-in replacement for the original Markdown Extra plugin for WordPress by Michel Fortin.
