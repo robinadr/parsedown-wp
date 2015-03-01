@@ -61,6 +61,15 @@ software, even if advised of the possibility of such damage.
 require_once __DIR__ . '/Parsedown/Parsedown.php';
 require_once __DIR__ . '/Parsedown/ParsedownExtra.php';
 
+class Parsedown_WP_Parser extends ParsedownExtra
+{
+	protected function inlineSpecialCharacter( $excerpt )
+	{
+		// Do nothing. WordPress handles HTML special characters
+		// and curly quotes by default.
+	}
+}
+
 class Parsedown_WP
 {
 	private $parser;
@@ -70,13 +79,12 @@ class Parsedown_WP
 
 	public function __construct()
 	{
-		//add_action( 'init', array( $this, 'init' ) );
-		$this->init();
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
 	public function init()
 	{
-		$this->parser = new ParsedownExtra();
+		$this->parser = new Parsedown_WP_Parser();
 
 		// These filters are taken directly from PHP Markdown Extra by Michel 
 		// Fortin to ensure it's a 100% drop-in solution.
