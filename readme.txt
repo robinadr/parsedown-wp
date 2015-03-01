@@ -3,7 +3,7 @@
 contributors: rob1n
 Tags: markdown, formatting, posting, writing, markup
 Tested up to: 4.1.1
-Stable tag: 0.1
+Stable tag: 0.2
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
@@ -29,6 +29,10 @@ Development of this WordPress plugin [takes place over on GitHub](https://github
 That's it. All your posts and comments are now being processed by Parsedown.
 
 == Changelog ==
+
+= 0.2 =
+
+Fixed unintended behavior of converting HTML special characters. WordPress does this automatically, and converting makes curly quotes not work.
 
 = 0.1 =
 
