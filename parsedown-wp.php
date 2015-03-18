@@ -141,7 +141,7 @@ class Parsedown_WP
 	{
 		$regex = apply_filters( 'pdwp_add_p_regex', '{^$|^<(p|ul|ol|dl|pre|blockquote)>}i' );
 
-		if (!preg_match( $regex, $text ) ) {
+		if ( !preg_match( $regex, $text ) ) {
 			$text = '<p>' . $text . '</p>';
 			$text = preg_replace( '{\n{2,}}', "</p>\n\n<p>", $text );
 		}
@@ -152,7 +152,7 @@ class Parsedown_WP
 	// Taken from PHP Markdown Extra by Michel Fortin
 	public function pdwp_strip_p( $text )
 	{
-		return apply_filters( 'pdwp_strip_p', preg_replace( '{</?p>}i', '', $t ) );
+		return apply_filters( 'pdwp_strip_p', preg_replace( '{</?p>}i', '', $text ) );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
