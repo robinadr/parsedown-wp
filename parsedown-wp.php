@@ -13,7 +13,6 @@
 */
 
 /*
-
 This plugin is intended to be a 100% compatible drop-in replacement for PHP 
 Markdown Extra by Michel Fortin. Thus, some portions, namely filter order and 
 helper functions, are directly copied from his plugin. These portions are noted 
@@ -55,7 +54,6 @@ profits; or business interruption) however caused and on any theory of
 liability, whether in contract, strict liability, or tort (including
 negligence or otherwise) arising in any way out of the use of this
 software, even if advised of the possibility of such damage.
-
 */
 
 require_once __DIR__ . '/Parsedown/Parsedown.php';
@@ -63,7 +61,7 @@ require_once __DIR__ . '/Parsedown/ParsedownExtra.php';
 
 class Parsedown_WP_Parser extends ParsedownExtra
 {
-	protected function inlineSpecialCharacter( $excerpt )
+	protected function inlineSpecialCharacter( $text )
 	{
 		// Do nothing. WordPress handles HTML special characters
 		// and curly quotes by default.
@@ -94,28 +92,29 @@ class Parsedown_WP
 		remove_filter( 'the_content_rss',	'wpautop' );
 		remove_filter( 'the_excerpt',		'wpautop' );
 
-		add_filter( 'the_content', 		array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'the_content_rss', 	array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'get_the_excerpt', 	array( $this, 'pdwp_markdown' ), 6 );
+		add_filter( 'the_content', 		array( $this, 'markdown' ), 6 );
+		add_filter( 'the_content_rss', 	array( $this, 'markdown' ), 6 );
+		add_filter( 'get_the_excerpt', 	array( $this, 'markdown' ), 6 );
 		add_filter( 'get_the_excerpt', 	'trim', 7 );
-		add_filter( 'the_excerpt', 		array( $this, 'pdwp_add_p' )  );
-		add_filter( 'the_excerpt_rss', 	array( $this, 'pdwp_strip_p' )  );
+		add_filter( 'the_excerpt', 		array( $this, 'add_p' )  );
+		add_filter( 'the_excerpt_rss', 	array( $this, 'strip_p' )  );
 
 		remove_filter( 'content_save_pre', 	'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 	'balanceTags', 50 );
-		add_filter( 'the_content', 			'balanceTags', 50 );
-		add_filter( 'get_the_excerpt', 		'balanceTags', 9 );
+
+		add_filter( 'the_content', 		'balanceTags', 50 );
+		add_filter( 'get_the_excerpt', 	'balanceTags', 9 );
 
 		// Comment filters
 		remove_filter( 'comment_text', 	'wpautop', 30 );
 		remove_filter( 'comment_text', 	'make_clickable' );
 
-		add_filter( 'pre_comment_content', 	array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'pre_comment_content', 	array( $this, 'pdwp_hide_tags' ), 8 );
-		add_filter( 'pre_comment_content', 	array( $this, 'pdwp_show_tags' ), 12 );
-		add_filter( 'get_comment_text', 	array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'get_comment_excerpt', 	array( $this, 'pdwp_markdown' ), 6 );
-		add_filter( 'get_comment_excerpt', 	array( $this, 'pdwp_strip_p' ), 7 );
+		add_filter( 'pre_comment_content', 	array( $this, 'markdown' ), 6 );
+		add_filter( 'pre_comment_content', 	array( $this, 'hide_tags' ), 8 );
+		add_filter( 'pre_comment_content', 	array( $this, 'show_tags' ), 12 );
+		add_filter( 'get_comment_text', 	array( $this, 'markdown' ), 6 );
+		add_filter( 'get_comment_excerpt', 	array( $this, 'markdown' ), 6 );
+		add_filter( 'get_comment_excerpt', 	array( $this, 'strip_p' ), 7 );
 
 		// Taken from PHP Markdown Extra by Michel Fortin
 		$this->hidden_tags = array(
@@ -131,13 +130,13 @@ class Parsedown_WP
 		$this->placeholders = apply_filters( 'pdwp_placeholders', $this->placeholders );
 	}
 
-	public function pdwp_markdown( $text )
+	public function markdown( $text )
 	{
 		return apply_filters( 'pdwp_markdown', $this->parser->text( $text ) );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
-	public function pdwp_add_p( $text )
+	public function add_p( $text )
 	{
 		$regex = apply_filters( 'pdwp_add_p_regex', '{^$|^<(p|ul|ol|dl|pre|blockquote)>}i' );
 
@@ -150,19 +149,19 @@ class Parsedown_WP
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
-	public function pdwp_strip_p( $text )
+	public function strip_p( $text )
 	{
 		return apply_filters( 'pdwp_strip_p', preg_replace( '{</?p>}i', '', $text ) );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
-	public function pdwp_hide_tags( $text )
+	public function hide_tags( $text )
 	{
 		return str_replace( $this->hidden_tags, $this->placeholders, $text );
 	}
 
 	// Taken from PHP Markdown Extra by Michel Fortin
-	public function pdwp_show_tags( $text )
+	public function show_tags( $text )
 	{
 		return str_replace( $this->placeholders, $this->hidden_tags, $text );
 	}
