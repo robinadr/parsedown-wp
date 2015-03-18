@@ -3,7 +3,7 @@
 	Plugin Name: Parsedown for WordPress
 	Plugin URI: https://wordpress.org/plugins/parsedown-wp/
 	Description: A drop-in Markdown plugin using Parsedown Extra.
-	Version: 0.2
+	Version: 0.3
 	Author: Robin Adrianse
 	Author URI: http://robinadr.com/
 
