@@ -2,7 +2,7 @@
 
 contributors: rob1n
 Tags: markdown, formatting, posting, writing, markup
-Tested up to: 4.1.1
+Tested up to: 4.2
 Stable tag: 0.3
 License: MIT
 License URI: http://opensource.org/licenses/MIT
